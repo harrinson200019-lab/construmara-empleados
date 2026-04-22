@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Empleados - Construmara</title>
+    <meta charset="UTF-8">
+
+    <style>
+        /* Estilo general de la página */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #eef1f5;
+            margin: 40px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Tarjetas */
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-card { width: 300px; }
+        .table-card { flex: 1; }
+
+        /* Inputs */
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        /* Botones */
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-guardar { background: #28a745; }
+        .btn-editar { background: #ffc107; }
+        .btn-eliminar { background: #dc3545; }
+        .btn-buscar { background: #007bff; }
+
+        /* Tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        /* Mensajes */
+        .mensaje {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+
+        .ok { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+
+    <script>
+        // Confirmación antes de eliminar
+        function confirmarEliminar() {
+            return confirm("¿Seguro que deseas eliminar este usuario?");
+        }
+    </script>
+
+</head>
+<body>
+
+<!-- TÍTULO PRINCIPAL -->
+<h1>Gestión de Empleados</h1>
+
+<!-- MENSAJES DEL SISTEMA -->
+<div th:if="${param.msg == 'guardado'}" class="mensaje ok">
+    Usuario guardado correctamente
+</div>
+
+<div th:if="${param.msg == 'actualizado'}" class="mensaje ok">
+    Usuario actualizado correctamente
+</div>
+
+<div th:if="${param.msg == 'eliminado'}" class="mensaje ok">
+    Usuario eliminado correctamente
+</div>
+
+<!-- MENSAJE DE ERROR (ej: usuario no encontrado) -->
+<div th:if="${error}" class="mensaje error" th:text="${error}"></div>
+
+<!-- BUSCADOR DE EMPLEADOS -->
+<div class="card" style="width:300px; margin-bottom:20px;">
+    <form th:action="@{/empleados/buscar}" method="get">
+        <input type="text" name="nombre" placeholder="Buscar empleado">
+        <button type="submit" class="btn-buscar">Buscar</button>
+    </form>
+</div>
+
+<div class="container">
+
+    <!-- FORMULARIO DE REGISTRO / ACTUALIZACIÓN -->
+    <div class="card form-card">
+        <h3>Formulario</h3>
+
+        <form th:action="${empleado.id != null} ? @{/empleados/actualizar} : @{/empleados/guardar}"
+              th:object="${empleado}" method="post">
+
+            <!-- Campo oculto para ID (necesario para actualizar) -->
+            <input type="hidden" th:field="*{id}">
+
+            <!-- Campos del formulario -->
+            <input type="text" th:field="*{nombre}" placeholder="Nombre" required>
+            <input type="text" th:field="*{identificacion}" placeholder="Identificación">
+            <input type="text" th:field="*{tipoIdentificacion}" placeholder="Tipo Identificación">
+            <input type="email" th:field="*{correoElectronico}" placeholder="Correo">
+            <input type="text" th:field="*{direccion}" placeholder="Dirección">
+            <input type="text" th:field="*{dependencia}" placeholder="Dependencia">
+
+            <!-- Botón dinámico: guardar o actualizar -->
+            <button type="submit" class="btn-guardar"
+                    th:text="${empleado.id != null} ? 'Actualizar' : 'Guardar'">
+            </button>
+        </form>
+    </div>
+
+    <!-- TABLA DE EMPLEADOS -->
+    <div class="card table-card">
+        <h3>Lista de Empleados</h3>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Dependencia</th>
+                <th>Acciones</th>
+            </tr>
+
+            <!-- Iteración de empleados -->
+            <tr th:each="emp : ${empleados}">
+                <td th:text="${emp.id}"></td>
+                <td th:text="${emp.nombre}"></td>
+                <td th:text="${emp.correoElectronico}"></td>
+                <td th:text="${emp.dependencia}"></td>
+
+                <td>
+                    <!-- Botón editar -->
+                    <button class="btn-editar"
+                            th:onclick="'window.location.href=\'/empleados/editar/' + ${emp.id} + '\''">
+                        Editar
+                    </button>
+
+                    <!-- Botón eliminar con confirmación -->
+                    <button class="btn-eliminar"
+                            th:onclick="'if(confirmarEliminar()) window.location.href=\'/empleados/eliminar/' + ${emp.id} + '\''">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
