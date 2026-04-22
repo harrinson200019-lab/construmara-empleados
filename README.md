@@ -31,6 +31,15 @@ Aplicación web desarrollada con Spring Boot para la gestión de empleados. Perm
 ## 🔗 Repositorio
 https://github.com/harrinson200019-lab/construmara-empleados
 
+## 🧪 Pruebas realizadas
+- Registro de empleados exitoso
+- Edición de empleados funcional
+- Eliminación con confirmación
+- Búsqueda con validación de no encontrado
+
+## 📌 Conclusión
+El sistema cumple con los requerimientos de gestión de empleados utilizando buenas prácticas de desarrollo y arquitectura basada en Spring Boot.
+
 
 ## 👨‍💻 Autor
 Harrinson Ipia
