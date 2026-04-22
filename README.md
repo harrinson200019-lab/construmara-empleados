@@ -29,7 +29,7 @@ Aplicación web desarrollada con Spring Boot para la gestión de empleados. Perm
 - Motor: MySQL
 
 ## 🔗 Repositorio
-(Pega aquí tu link de GitHub)
+https://github.com/harrinson200019-lab/construmara-empleados
 
 
 ## 👨‍💻 Autor
