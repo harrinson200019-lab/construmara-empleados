@@ -99,16 +99,16 @@
 <!-- TÍTULO PRINCIPAL -->
 <h1>Gestión de Empleados</h1>
 
-<!-- MENSAJES DEL SISTEMA -->
-<div th:if="${param.msg == 'guardado'}" class="mensaje ok">
+<!-- MENSAJES DEL SISTEMA (CORREGIDO) -->
+<div th:if="${param.msg != null and param.msg[0] == 'guardado'}" class="mensaje ok">
     Usuario guardado correctamente
 </div>
 
-<div th:if="${param.msg == 'actualizado'}" class="mensaje ok">
+<div th:if="${param.msg != null and param.msg[0] == 'actualizado'}" class="mensaje ok">
     Usuario actualizado correctamente
 </div>
 
-<div th:if="${param.msg == 'eliminado'}" class="mensaje ok">
+<div th:if="${param.msg != null and param.msg[0] == 'eliminado'}" class="mensaje ok">
     Usuario eliminado correctamente
 </div>
 
